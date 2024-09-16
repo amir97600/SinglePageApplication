@@ -1,12 +1,29 @@
-import { Outlet, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import styled from 'styled-components'
+
+const StyledLink = styled(Link)`
+  padding: 15px;
+  color: #8186a0;
+  text-decoration: none;
+  font-size: 18px;
+`
 
 function Survey() {
+  const { questionNumber } = useParams()
+  const questionNumberInt = parseInt(questionNumber)
+  const prevQuestionNumber = questionNumberInt === 1 ? 1 : questionNumberInt - 1
+  const nextQuestionNumber = questionNumberInt + 1
   return (
     <div>
-      <h1 className="text-3xl font-bold underline">Questionnaire</h1>
-      <Link to="client">Questionnaire Client</Link>
-      <Link to="freelance">Questionnaire Freelance</Link>
-      <Outlet />
+      <h1>Questionnaire </h1>
+      <h2>Question {questionNumber}</h2>
+      <StyledLink to={`/Survey/${prevQuestionNumber}`}>Précédent</StyledLink>
+      {questionNumberInt === 10 ? (
+        <StyledLink to="/Results">Résultats</StyledLink>
+      ) : (
+        <StyledLink to={`/Survey/${nextQuestionNumber}`}>Suivant</StyledLink>
+      )}
     </div>
   )
 }
